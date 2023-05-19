@@ -1,5 +1,4 @@
 from ursina import *
-from collections import namedtuple
 from copy import copy
 
 

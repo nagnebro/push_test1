@@ -89,6 +89,7 @@ Sky()
 RenScene(Empty(
     evil=0,
     chaos=0,
+    font="NanumSquareRoundR.ttf",
     bar_mission_solved=False,
 ))
 
