@@ -10,17 +10,18 @@ class Node:
         return 'Node:\n    ' + '\n    '.join([f'{e} = {getattr(self, e)}' for e in Node.__slots__])
 
 
-class Conversation(Entity):
+class RenConversation(Entity):
 
     def __init__(self, variables_object=None, **kwargs):
         super().__init__(parent=camera.ui, y=-.1)
 
-        self.question = Button(parent=camera.ui, text_origin=(0, 0), scale=(.5, .5), model="quad",
+        self.question = Button(parent=camera.ui, text_origin=(0, .3), scale=(camera.aspect_ratio, .25), model="quad",
                                origin=(0, 0),
-                               position=(0, 0),
+                               position=(0, -.4),
                                text='Question')
+        self.question.text_entity.font = "NanumSquareRoundR.ttf"
         self.question.text_entity.line_height = 1.25
-        self.question.text_entity.position = (-.45, -.05)
+        # self.question.text_entity.position = (-.45, -.05)
         self.question.highlight_color = self.question.color
         self.more_indicator = Entity(parent=self.question, model=Circle(3), position=(.45, -.4, -.1), rotation_z=180,
                                      color=color.azure, world_scale=.5, z=-1, enabled=False)
@@ -31,7 +32,7 @@ class Conversation(Entity):
 
         self.more_indicator.toggle = toggle
         self.more_indicator.toggle()
-        self.spacing = 4 * .02
+        self.spacing = 4 * .04
         self.wordwrap = 65
         self.button_model = Quad(radius=.5, aspect=1 / .075)
         self.variables_object = variables_object
@@ -39,7 +40,7 @@ class Conversation(Entity):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
-        self.answer_0 = Button(parent=self, text='answer_0', y=self.question.y - self.spacing - .025, scale=(1, .075),
+        self.answer_0 = Button(parent=self, text='answer_0', y=.25, scale=(1, .075),
                                text_origin=(-.5, 0), model=copy(self.button_model))
         self.answer_1 = Button(parent=self, text='answer_1', y=self.answer_0.y - self.spacing, scale=(1, .075),
                                text_origin=(-.5, 0), model=copy(self.button_model))
@@ -48,6 +49,7 @@ class Conversation(Entity):
 
         self.buttons = (self.answer_0, self.answer_1, self.answer_2)
         for b in self.buttons:
+            b.text_entity.font = "NanumSquareRoundR.ttf"
             b.text_entity.line_height = 1.15
             b.text_entity.position = (-.45, 0)
 
@@ -89,7 +91,7 @@ class Conversation(Entity):
         invoke(self.button_appear_sequence.start, delay=self.question_appear_sequence.duration)
 
         if not node.children:
-            self.buttons[0].text = '*leave*'
+            self.buttons[0].text = '*떠난다*'
             self.buttons[0].on_click = Func(setattr, self, 'enabled', False)
             self.button_appear_sequence.append(Func(setattr, self.buttons[0], 'enabled', True))
 
@@ -205,7 +207,7 @@ if __name__ == '__main__':
         chaos=0,
         bar_mission_solved=False,
     )
-    conversation = Conversation(variables_object=variables)
+    conversation = RenConversation(variables_object=variables)
     # conversation.question.model = 'quad'
     # for b in conversation.buttons:
     #     b.model = 'quad'

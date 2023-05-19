@@ -1,6 +1,8 @@
 from ursina import *
-from ursina.prefabs.conversation import Conversation
-from renconversation import RenConversation
+
+from scene.renscene import RenScene
+from ui.renconversation import RenConversation
+
 
 class Node:
     __slots__ = ['index', 'indent_level', 'content', 'code', 'children', 'is_answer']
@@ -8,50 +10,33 @@ class Node:
     def __str__(self):
         return 'Node:\n    ' + '\n    '.join([f'{e} = {getattr(self, e)}' for e in Node.__slots__])
 
+
 app = Ursina()
+window.borderless = False
 
-variables = Empty(
-    evil=0,
-    chaos=0,
-    bar_mission_solved=False,
-)
-conversation = RenConversation(variables_object=variables)
-convo = dedent('''
-I'm looking for my sister. Can you help me find her, please? I haven't seen her in days! Who know what could've happened!?
-I'm worried. Will you help me?
-    * Yes, of course. This can be a dangerous city.
-        Oh no! Do you think something happened to her?
-        What should I do?!
-            * She's probably fine. She can handle herself.
-                You're right. I'm still worried though.
-                    * Don't worry, I'll look for her.
-                        Plus
-                        NO
-                            * What?
-                                Nothing, for test
-                                    * .
-            * Maybe. (stats.chaos += 1)
-                Help me look for her, please! *runs off*
-    * I'm sorry, but I don't have time right now. (evil += 1)
-        A true friend wouldn't say that.
-    * I know where she is! (if bar_mission_solved)
-        Really? Where?
-            * I saw her on a ship by the docks, it looked like they were ready to set off.
-                Thank you! *runs off*
-''')
-conversation.start_conversation(convo)
-
+# wp = WindowPanel(
+#     title='Custom Window',
+#     content=(
+#         Text('Name:'),
+#         InputField(name='name_field'),
+#         Button(text='Submit', color=color.azure),
+#         Slider(),
+#         Slider(),
+#         ButtonGroup(('test', 'eslk', 'skffk'))
+#     ),
+# )
+# wp.y = wp.panel.scale_y / 2 * wp.scale_y  # center the window panel
 
 ground = Entity(model='plane', collider='box', scale=64, texture='brick', texture_scale=(4, 4))
 ground.rotation_x = -90
 
 editor_camera = EditorCamera(enabled=False, ignore_paused=True)
 
-b1 = Entity(model='cube', scale=2,          position=(-3, 1, -1))
-b2 = Entity(model='cube', scale=(2, 4, 1),  position=(0, 4, -0.5))
-b3 = Entity(model='cube', scale=(2, 4, 1),  position=(2, 4, -0.5))
-b4 = Entity(model='cube', scale=4,          position=(6, 4, -2))
-b5 = Entity(model='cube', scale=(4, 2, 1),  position=(0, -4, -0.5))
+b1 = Entity(model='cube', scale=2, position=(-3, 1, -1))
+b2 = Entity(model='cube', scale=(2, 4, 1), position=(0, 4, -0.5))
+b3 = Entity(model='cube', scale=(2, 4, 1), position=(2, 4, -0.5))
+b4 = Entity(model='cube', scale=4, position=(6, 4, -2))
+b5 = Entity(model='cube', scale=(4, 2, 1), position=(0, -4, -0.5))
 
 player_graphics = SpriteSheetAnimation('Tressa', tileset_size=(6, 5), fps=4, animations={
     'idle_left': ((1, 4), (1, 4)),
@@ -101,9 +86,19 @@ sun_sub.look_at(Vec3(-0.5, 1, 1))
 
 Sky()
 
+RenScene(Empty(
+    evil=0,
+    chaos=0,
+    bar_mission_solved=False,
+))
+
+
+
+
+# item = Entity(parent=camera.ui, model='quad', texture='blueprint', scale=.3, z=2)
+
 # start running the game
 app.run()
-
 
 # if __name__ == '__main__':
 #     app = Ursina()
