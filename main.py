@@ -11,8 +11,10 @@ class Node:
         return 'Node:\n    ' + '\n    '.join([f'{e} = {getattr(self, e)}' for e in Node.__slots__])
 
 
+
 app = Ursina()
 window.borderless = False
+# Urisina 실행   , borderless 창의 border를 없애겠느냐는 옵션
 
 # wp = WindowPanel(
 #     title='Custom Window',
@@ -26,6 +28,8 @@ window.borderless = False
 #     ),
 # )
 # wp.y = wp.panel.scale_y / 2 * wp.scale_y  # center the window panel
+
+
 
 ground = Entity(model='plane', collider='box', scale=64, texture='brick', texture_scale=(4, 4))
 ground.rotation_x = -90
@@ -42,15 +46,21 @@ player_graphics = SpriteSheetAnimation('Tressa', tileset_size=(6, 5), fps=4, ani
     'idle_left': ((1, 4), (1, 4)),
     'idle_right': ((0, 4), (0, 4)),
 
+
+
     'walk_down': ((0, 3), (4, 3)),
     'walk_up': ((0, 2), (4, 2)),
     'walk_left': ((0, 1), (4, 1)),
     'walk_right': ((0, 0), (4, 0)),
 })
+
+
+
 player_graphics.play_animation('idle_right')
 player_graphics.z = -0.5
 player_graphics.scale_x = 0.6
 player_graphics.rotation_x = -90
+
 
 
 def input(key):
@@ -78,6 +88,7 @@ def update():
     camera.rotation_x = -75
 
 
+
 sun = DirectionalLight(color=color.rgba(255, 255, 220, 255), shadows=True)
 sun.look_at(Vec3(0.5, 1, 1))
 
@@ -92,6 +103,7 @@ RenScene(Empty(
     font="NanumSquareRoundR.ttf",
     bar_mission_solved=False,
 ))
+
 
 
 
